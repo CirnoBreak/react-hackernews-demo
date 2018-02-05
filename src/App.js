@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
+import Button from './Button';
 // import logo from './logo.svg';
 import './App.css';
 import Table from './Table';
 import Search from './Search';
+
 const DEFAULT_QUERY = 'redux';
+const DEFAULT_HPP = '20';
+
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
-
+const PARAM_PAGE = 'page=';
+const PARAM_HPP = 'hitsPerPage=';
 
 class App extends Component {
   constructor(props) {
@@ -34,13 +39,27 @@ class App extends Component {
   }
 
   setSearchTopStories(result) {
-    console.log(result)
-    this.setState({ result });
+    const { hits, page } = result;
+
+    const oldHits = page !== 0 ? this.state.result.hits : [];
+
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+    // console.log(result)
+    this.setState({
+      result: {
+        hits: updatedHits,
+        page
+      }
+    });
     console.log(this.state)
   }
 
-  fetchSearchTopStories(searchTerm) {
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  fetchSearchTopStories(searchTerm, page=0) {
+    console.log(page)
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
       .then(response => response.json())
       .then(result => this.setSearchTopStories(result))
       .catch(e => e);
@@ -58,7 +77,8 @@ class App extends Component {
   }
 
   render() {
-    const { searchTerm, result } = this.state
+    const { searchTerm, result } = this.state,
+      page = (result && result.page) || 0;
     // if (!result) { return null; }
     return (
       <div className="page">
@@ -78,6 +98,11 @@ class App extends Component {
               onDismiss={this.onDismiss.bind(this)}
             />
         }
+        <div className="interactions">
+          <Button onClick={this.fetchSearchTopStories.bind(this, searchTerm, page + 1)}>
+            more
+          </Button>
+        </div>
         {/* {list.map((item) => {
           return (
             <div key={item.objectID}>
