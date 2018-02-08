@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // function isSearched(searchTerm) {
 //   return function (item) {
 //     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -18,4 +19,12 @@ const Search = ({ value, onChange, onSubmit, children }) => {
         </form>
     );
 }
+
+Search.PropTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    
+}
+
 export default Search;
