@@ -5,22 +5,23 @@ import PropTypes from 'prop-types';
 //     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
 //   }
 // }
-const Search = ({ value, onChange, onSubmit, children }) => {
-    return (
-        <form onSubmit={onSubmit}>
-            {children} <input
-                type="text"
-                value={value}
-                onChange={onChange}
-            />
-            <button type="submit">
-                {children}
-            </button>
-        </form>
-    );
+const Search = ({value, onChange, onSubmit, children}) => {
+        return (
+            <form onSubmit={onSubmit}>
+                {children} <input
+                    type="text"
+                    value={value}
+                    onChange={onChange}
+                />
+                <button type="submit">
+                    {children}
+                </button>
+            </form>
+        );
+    
 }
 
-Search.PropTypes = {
+Search.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
