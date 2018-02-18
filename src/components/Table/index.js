@@ -40,6 +40,8 @@ class Table extends Component {
         })
     }
 
+    
+
     render() {
         const {
             list,
